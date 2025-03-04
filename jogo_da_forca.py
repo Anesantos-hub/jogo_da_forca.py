@@ -1,46 +1,107 @@
 import random
 
 def escolher_palavra():
-    palavras = ['python', 'programacao', 'desenvolvimento', 'forca', 'computador']
+    palavras = ['computador', 'python', 'desenvolvimento', 'jogo', 'programacao']
     return random.choice(palavras)
 
-def mostrar_palavra(palavra, letras_acertadas):
-    return ' '.join([letra if letra in letras_acertadas else '_' for letra in palavra])
+def desenhar_boneco(tentativas_restantes):
+    if tentativas_restantes == 6:
+        print("  _______  ")
+        print(" |       |  ")
+        print(" |          ")
+        print(" |          ")
+        print(" |          ")
+        print(" |          ")
+        print(" |          ")
+    elif tentativas_restantes == 5:
+        print("  _______  ")
+        print(" |       |  ")
+        print(" |       O  ")
+        print(" |          ")
+        print(" |          ")
+        print(" |          ")
+        print(" |          ")
+    elif tentativas_restantes == 4:
+        print("  _______  ")
+        print(" |       |  ")
+        print(" |       O  ")
+        print(" |       |  ")
+        print(" |          ")
+        print(" |          ")
+        print(" |          ")
+    elif tentativas_restantes == 3:
+        print("  _______  ")
+        print(" |       |  ")
+        print(" |       O  ")
+        print(" |      /|  ")
+        print(" |          ")
+        print(" |          ")
+        print(" |          ")
+    elif tentativas_restantes == 2:
+        print("  _______  ")
+        print(" |       |  ")
+        print(" |       O  ")
+        print(" |      /|\\ ")
+        print(" |          ")
+        print(" |          ")
+        print(" |          ")
+    elif tentativas_restantes == 1:
+        print("  _______  ")
+        print(" |       |  ")
+        print(" |       O  ")
+        print(" |      /|\\ ")
+        print(" |      /   ")
+        print(" |          ")
+        print(" |          ")
+    elif tentativas_restantes == 0:
+        print("  _______  ")
+        print(" |       |  ")
+        print(" |       O  ")
+        print(" |      /|\\ ")
+        print(" |      / \\ ")
+        print(" |          ")
+        print(" |          ")
+        print(" Você perdeu! ")
+      
 
 def jogar():
     palavra = escolher_palavra()
-    letras_acertadas = []
-    tentativas = 6
+    letras_corretas = ['_'] * len(palavra)
     letras_erradas = []
-
+    tentativas_restantes = 6
+    
     print("Bem-vindo ao Jogo da Forca!")
     
-    while tentativas > 0:
-        print(f"\nPalavra: {mostrar_palavra(palavra, letras_acertadas)}")
-        print(f"Tentativas restantes: {tentativas}")
-        print(f"Letras erradas: {' '.join(letras_erradas)}")
+    while tentativas_restantes > 0:
+        print(f"\nPalavra: {' '.join(letras_corretas)}")
+        print(f"Tentativas restantes: {tentativas_restantes}")
+        print(f"Letras erradas: {', '.join(letras_erradas)}")
         
-        # Solicitar uma letra do usuário
-        palpite = input("Digite uma letra: ").lower()
+        # Chama a função para desenhar o boneco com base nas tentativas restantes
+        desenhar_boneco(tentativas_restantes)
         
-        if palpite in letras_acertadas or palpite in letras_erradas:
-            print("Você já tentou essa letra.")
-            continue
+        letra = input("Digite uma letra: ").lower()
         
-        if palpite in palavra:
-            letras_acertadas.append(palpite)
-            print(f"Boa! A letra '{palpite}' está na palavra.")
+        if letra in palavra:
+            for i in range(len(palavra)):
+                if palavra[i] == letra:
+                    letras_corretas[i] = letra
+            print(f"Boa! A letra '{letra}' está na palavra.")
         else:
-            letras_erradas.append(palpite)
-            tentativas -= 1
-            print(f"Que pena! A letra '{palpite}' não está na palavra.")
+            tentativas_restantes -= 1
+            letras_erradas.append(letra)
+            print(f"Ops! A letra '{letra}' não está na palavra.")
         
-        # Verificar se o jogador ganhou
-        if all(letra in letras_acertadas for letra in palavra):
-            print(f"\nParabéns! Você acertou a palavra: {palavra}")
+        if '_' not in letras_corretas:
+            print(f"Parabéns! Você acertou a palavra: {palavra}")
             break
-    else:
-        print(f"\nVocê perdeu! A palavra era: {palavra}")
 
-# Iniciar o jogo
+        else:
+            print(f"\nVocê perdeu! A palavra era: {palavra}")
+            
+    else:
+        desenhar_boneco(tentativas_restantes)
+        
+
 jogar()
+
